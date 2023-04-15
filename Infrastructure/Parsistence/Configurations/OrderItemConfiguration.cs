@@ -13,8 +13,7 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
 
         builder.Property(p => p.Id)
             .HasColumnName("id")
-            .UseIdentityColumn()
-            .IsRequired();
+            .UseIdentityColumn();
 
         builder.Property(oi => oi.Name)
             .HasColumnName("name")

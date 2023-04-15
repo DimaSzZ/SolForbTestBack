@@ -7,6 +7,5 @@ public class CreateUpdateItemValidator : AbstractValidator<CreateUpdateItemComma
     public CreateUpdateItemValidator()
     {
         RuleFor(command => command.OrderId).NotNull();
-        RuleFor(command => command.Item).NotNull();
     }
 }

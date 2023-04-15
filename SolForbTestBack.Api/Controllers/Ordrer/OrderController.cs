@@ -14,8 +14,10 @@ public class OrderController : BaseController
     [HttpPost("save-order")]
     public async Task<IActionResult> SaveOrder([FromBody]CreateUpdateOrderCommand command, CancellationToken cancellationToken)
     {
-        await Mediator.Send(command, cancellationToken);
-        return Ok("Order saved");
+        var id = await Mediator.Send(command, cancellationToken);
+        if (command.Id == null)
+            return Ok(id);
+        return Ok("order updated");
     }
     [HttpDelete("delete-order/{id:int}")]
     public async Task<IActionResult> DeleteOrder(int id, CancellationToken cancellationToken)

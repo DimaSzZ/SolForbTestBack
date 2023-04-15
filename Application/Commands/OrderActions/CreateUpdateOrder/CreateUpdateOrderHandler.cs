@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Commands.OrderActions.CreateUpdateOrder;
 
-public class CreateUpdateOrderHandler : IRequestHandler<CreateUpdateOrderCommand>
+public class CreateUpdateOrderHandler : IRequestHandler<CreateUpdateOrderCommand,int>
 {
     private readonly IOrderRepository _orderRepository;
     public  CreateUpdateOrderHandler(IOrderRepository orderRepository)
@@ -12,7 +12,7 @@ public class CreateUpdateOrderHandler : IRequestHandler<CreateUpdateOrderCommand
         _orderRepository = orderRepository;
     }
 
-    public async Task Handle(CreateUpdateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateUpdateOrderCommand request, CancellationToken cancellationToken)
     {
         var data = new Order(
             request.Number,
@@ -23,6 +23,7 @@ public class CreateUpdateOrderHandler : IRequestHandler<CreateUpdateOrderCommand
         {
             data.Id = (int)request.Id;
         }
-        await _orderRepository.SaveOrder(data, cancellationToken);
+        var specialId = await _orderRepository.SaveOrder(data, cancellationToken);
+        return specialId;
     }
 }

@@ -32,7 +32,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .WithMany(p => p.Orders)
             .HasForeignKey(o => o.ProviderId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+
         builder.HasIndex(o => new { o.Number, o.ProviderId })
             .IsUnique();
     }

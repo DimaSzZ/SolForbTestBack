@@ -16,9 +16,10 @@ public class OrderRepository :  IOrderRepository
 
     private readonly PgDbContext _ctx;
     
-    public async Task SaveOrder(Order order, CancellationToken cancellationToken)
+    public async Task<int> SaveOrder(Order order, CancellationToken cancellationToken)
     {
         if(_ctx.OrderItems.Any(x => x.Name == order.Number)) throw new Exception("OrderItem.Name не может быть равен Order.Number (ограничение предметной области).");
+        if (!_ctx.Providers.Any(x => x.Id == order.ProviderId)) throw new Exception("Такого провайдера не существует");
         if (_ctx.Orders.Contains(order))
         {
             _ctx.Update(order);
@@ -27,6 +28,7 @@ public class OrderRepository :  IOrderRepository
             await _ctx.Orders.AddAsync(order, cancellationToken);
 
         await _ctx.SaveChangesAsync(cancellationToken);
+        return order.Id;
     }
 
     public async Task DeleteOrder(int id, CancellationToken cancellationToken)
